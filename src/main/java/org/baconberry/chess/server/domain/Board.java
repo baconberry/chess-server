@@ -3,9 +3,11 @@ package org.baconberry.chess.server.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
 
+@Slf4j
 public class Board {
     final Square[][] state = new Square[8][8];
 
@@ -22,7 +24,7 @@ public class Board {
     }
 
     public void printToConsole() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("\n");
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
                 var c = getPiece(x,y)
@@ -33,7 +35,7 @@ public class Board {
             }
             sb.append("\n");
         }
-        System.out.println(sb.toString());
+        log.error(sb.toString());
     }
 
     @AllArgsConstructor
