@@ -4,6 +4,7 @@ package org.baconberry.chess.server.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.baconberry.chess.server.util.Point;
 
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class Board {
         StringBuilder sb = new StringBuilder("\n");
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                var c = getPiece(x,y)
+                var c = getPiece(x, y)
                         .map(PieceColor::getPiece)
                         .map(Piece::identifier)
                         .orElse(".");
@@ -36,6 +37,29 @@ public class Board {
             sb.append("\n");
         }
         log.error(sb.toString());
+    }
+
+    public Optional<Point> findLocation(PieceColor piece) {
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                var locP = getPiece(x, y);
+                if (locP.isEmpty()) {
+                    continue;
+                }
+                if (locP.get().equals(piece)) {
+                    return Optional.of(Point.of(x, y));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public boolean isEmpty(Point pos) {
+        return getPiece(pos.x(), pos.x()).isEmpty();
+    }
+
+    public Optional<PieceColor> getPiece(Point point) {
+        return getPiece(point.x(), point.y());
     }
 
     @AllArgsConstructor

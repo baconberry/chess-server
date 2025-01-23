@@ -14,24 +14,22 @@ public class Match {
     final List<PieceColor> capturedPieces;
     boolean isWhiteTurn = true;
 
-    boolean applyCommand(Command command) {
-        if (!isValidCommand(command)) {
-            return false;
-        }
+    /**
+     * Applies a command that ALWAYS modifies the state of the board
+     *
+     * @param command previously validated command
+     */
+    void applyCommand(Command command) {
         var startPiece = board.getPiece(command.startX(), command.startY()).get();
         board.setPiece(command.startX(), command.startY(), null);
         var endPiece = board.getPiece(command.endX(), command.endY());
         endPiece.ifPresent(this::capturePiece);
         board.setPiece(command.endX(), command.endY(), startPiece);
         isWhiteTurn = !isWhiteTurn;
-        return true;
     }
 
     private void capturePiece(PieceColor pieceColor) {
         capturedPieces.add(pieceColor);
     }
 
-    private boolean isValidCommand(Command command) {
-        throw new UnsupportedOperationException();
-    }
 }
